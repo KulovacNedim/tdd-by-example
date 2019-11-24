@@ -1,15 +1,15 @@
 package guru.springframework;
 
-public class Money {
-    protected int amount;
-    protected String currency;
+public class Money implements Expression {
+    final int amount;
+    private final String currency;
 
     public Money(int amount, String currency) {
         this.amount = amount;
         this.currency = currency;
     }
 
-    protected String currency() {
+    String currency() {
         return this.currency;
     }
 
@@ -23,14 +23,31 @@ public class Money {
 
     @Override
     public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
         Money money = (Money) o;
         return amount == money.amount &&
                 currency == money.currency;
     }
 
-    public Money times(int multiplier) {
+    @Override
+    public Expression times(int multiplier) {
         return new Money(amount * multiplier, this.currency);
+    }
+
+    @Override
+    public Expression plus(Expression addend) {
+        return new Sum(this, addend);
+    }
+
+    @Override
+    public Money reduce(Bank bank, String to) {
+        return new Money(amount/bank.rate(this.currency, to), to);
+    }
+
+    @Override
+    public String toString() {
+        return "Money{" +
+                "amount=" + amount +
+                ", currency='" + currency + '\'' +
+                '}';
     }
 }
