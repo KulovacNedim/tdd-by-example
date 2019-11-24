@@ -2,9 +2,9 @@ package guru.springframework;
 
 import java.util.Objects;
 
-public class Pair {
-    private String from;
-    private String to;
+class Pair {
+    private final String from;
+    private final String to;
 
     public Pair(String from, String to) {
         this.from = from;
